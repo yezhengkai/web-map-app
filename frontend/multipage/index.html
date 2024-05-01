@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Interactive Map</title>
+  <link rel="icon" type="image/x-icon" href="/map.svg">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+      grid-template-columns: 2fr 8fr;
+      grid-template-rows: 1fr 9fr;
+      grid-template-areas:
+        "header header"
+        "main  main";
+    }
+
+    header {
+      grid-area: header;
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    main {
+      grid-area: main;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      margin-right: 20px;
+    }
+
+    .cards {
+      display: flex;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+
+      @media(min-width: 40rem) {
+        width: 50%;
+      }
+
+      @media(min-width: 56rem) {
+        width: 33.3%;
+      }
+
+      .card-item {
+        display: flex;
+        flex-direction: column;
+        background-color: #f2bebe;
+        width: 100%;
+        border-radius: 6px;
+        box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        transition: transform 0.5s;
+        -webkit-transition: transform 0.5s;
+
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.1);
+          -webkit-transform: scale(1.1);
+
+          .card-image {
+            opacity: 1;
+          }
+        }
+      }
+
+      .card-info {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        padding: 1rem;
+        line-height: 1.5em;
+      }
+
+      .card-title {
+        font-size: 25px;
+        line-height: 1.1em;
+        color: #32325d;
+        margin-bottom: 0.2em;
+      }
+
+      .card-image {
+        height: 200px;
+        overflow: hidden;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 6px 6px 0px 0px;
+        opacity: 0.91;
+      }
+
+      .card-link {
+        display: block;
+        padding: 1em;
+        text-decoration: none;
+        color: initial;
+      }
+    }
+  </style>
+  <script type="module">
+    let imgs = [
+      'https://camo.githubusercontent.com/489c571f84155648420dac3460a4dafdd191a9a893548704fccb9a6eb4478be2/68747470733a2f2f7261776769742e636f6d2f4c6561666c65742f4c6561666c65742f6d61696e2f7372632f696d616765732f6c6f676f2e737667',  // leaflet
+      'https://camo.githubusercontent.com/29b0f88d443dea7a4e835287b43b0acb9b83a41177fc75a7f32cf6ed9edbb0b4/68747470733a2f2f6d61706c696272652e6f72672f696d672f6d61706c696272652d6c6f676f2d6269672e737667',  // maplibre
+      'https://avatars.githubusercontent.com/u/13678959?s=200&v=4'  // maptalks
+    ];
+    document.querySelectorAll('div.card-image').forEach((element, i) => {
+      element.style['background-image'] = 'url(' + imgs[i] + ')'
+    });
+  </script>
+</head>
+
+<body>
+  <header>
+    <div id="logo">
+      <a href="map.html">App Name</a>
+      <div id="menu-button" class="header-button"></div>
+      <div id="category-button" class="header-button"></div>
+    </div>
+  </header>
+  <main>
+    <div class="cards">
+      <a href="./page-leaflet/" class="card-link">
+        <div class="card-item">
+          <div class="card-image">
+          </div>
+          <div class="card-info">
+            <h2 class="card-title">Leaflet</h2>
+            <p class="card-intro">Go to the subpage implemented using leaflet.js.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="cards">
+      <a href="./page-maplibre/" class="card-link">
+        <div class="card-item">
+          <div class="card-image">
+          </div>
+          <div class="card-info">
+            <h2 class="card-title">MapLibre</h2>
+            <p class="card-intro">Go to the subpage implemented using maplibre-gl.js.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="cards">
+      <a href="./page-maptalks/" class="card-link">
+        <div class="card-item">
+          <div class="card-image">
+            <!-- Add leaflet icon -->
+          </div>
+          <div class="card-info">
+            <h2 class="card-title">MapTalks</h2>
+            <p class="card-intro">Go to the subpage implemented using maptalks.js.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>

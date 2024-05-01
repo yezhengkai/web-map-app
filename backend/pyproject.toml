@@ -1,0 +1,157 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{ include = "backend", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.108.0"
+uvicorn = { extras = ["standard"], version = "^0.25.0" }
+gunicorn = "^21.2.0"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.0"
+click = "^8.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+pytest-cov = "^5.0.0"
+
+[tool.poetry.scripts]
+backend = "backend.cli:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poe.tasks] # https://poethepoet.natn.io/index.html
+init-dev = "poetry install --no-interaction"
+init = "poetry install --no-interaction --without=dev"
+test = "pytest -v tests"
+test-cov = "pytest -v --cov=src/backend tests"
+lint = "ruff check --fix src"
+format = "ruff format src"
+
+[tool.poe.tasks.api-dev]
+cmd = "uvicorn --host $host --port $port --reload --reload-exclude 'playground/*, gcp/*' backend.main:app"
+help = "Serve REST APIs in development mode"
+[tool.poe.tasks.api-dev.args.host]
+options = ["-h", "--host"]
+help = "Bind socket to this host"
+default = "127.0.0.1"
+[tool.poe.tasks.api-dev.args.port]
+options = ["-p", "--port"]
+help = "Bind socket to this port"
+default = "8000"
+
+[tool.poe.tasks.api-prod]
+cmd = """
+gunicorn \
+  --access-logfile - \
+  --bind $host:$port \
+  --graceful-timeout 10 \
+  --keep-alive 10 \
+  --log-file - \
+  --timeout 30 \
+  --worker-class uvicorn.workers.UvicornWorker \
+  --worker-tmp-dir /dev/shm \
+  --workers 4 \
+  backend.main:app
+"""
+help = "Serve REST APIs in production mode"
+[tool.poe.tasks.api-prod.args.host]
+options = ["-h", "--host"]
+help = "Bind socket to this host"
+default = "127.0.0.1"
+[tool.poe.tasks.api-prod.args.port]
+options = ["-p", "--port"]
+help = "Bind socket to this port"
+default = "8000"
+
+[tool.poe.tasks.api]
+help = "Serve REST APIs"
+shell = """
+if [ $dev ]
+then {
+  export $(cat .env.development.local | egrep -v '#|^$' | xargs) \
+  && uvicorn \
+    --host $host \
+    --port $port \
+    --reload \
+    backend.main:app
+} else {
+    gunicorn \
+    --access-logfile - \
+    --bind $host:$port \
+    --graceful-timeout 10 \
+    --keep-alive 10 \
+    --log-file - \
+    --timeout 30 \
+    --worker-class uvicorn.workers.UvicornWorker \
+    --worker-tmp-dir /dev/shm \
+    --workers 2 \
+    backend.main:app
+} fi
+"""
+
+[[tool.poe.tasks.api.args]]
+help = "Bind socket to this host"
+name = "host"
+options = ["--host"]
+default = "127.0.0.1"
+
+[[tool.poe.tasks.api.args]]
+help = "Bind socket to this port"
+name = "port"
+options = ["--port"]
+default = "8000"
+
+[[tool.poe.tasks.api.args]]
+help = "Enable development mode"
+type = "boolean"
+name = "dev"
+options = ["--dev"]
+
+
+# https://github.com/tiangolo/fastapi/blob/master/pyproject.toml
+# https://blog.kyomind.tw/ruff/
+# https://laszlo.substack.com/p/cq4ds-python-project-from-scratch
+# https://github.com/radix-ai/poetry-cookiecutter
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "I", # isort
+    # "D",  # pydocstyle
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+
+ignore = [
+    "E501", # line too long
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+    "W191", # indentation contains tabs
+]
+
+# [tool.ruff.lint.pydocstyle]
+# convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_defs = true

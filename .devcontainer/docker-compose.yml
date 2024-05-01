@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm
+    volumes:
+      - ..:/workspaces:cached  # Mount the root folder that contains .git
+    command: sleep infinity
+
+  backend:
+    image: web-map-app-backend-devcontainer
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        - VARIANT=3.11-bookworm
+
+    volumes:
+      - ..:/workspaces:cached  # Mount the root folder that contains .git
+      - poetry-cache-dir:/home/vscode/.cache/pypoetry:rw
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:db
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  db:
+    image: postgres:16.1
+    # restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_DB: webmap
+      POSTGRES_PASSWORD: goodservice
+
+    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+  
+  # Ref: https://github.com/twtrubiks/docker-pgadmin4-tutorial
+  # pgadmin4:
+  #   image: dpage/pgadmin4:8.1
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "YOUR@gmail.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "PASSWORD"
+  #     PGADMIN_CONFIG_SESSION_EXPIRATION_TIME: 365
+  #     PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME: 60
+  #   volumes:
+  #     - pgadmin4-data:/var/lib/pgadmin
+  #   ports:
+  #     - "5050:80"
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+
+volumes:
+  poetry-cache-dir:
+    external: true
+  postgres-data:
+  # pgadmin4-data:

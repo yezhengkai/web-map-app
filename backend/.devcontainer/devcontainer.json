@@ -1,0 +1,77 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
+{
+	"name": "Python 3 & PostgreSQL",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+        "ghcr.io/devcontainers/features/node:1": {}
+    },
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// This can be used to network with other containers or the host.
+	// "forwardPorts": [5000, 5432],
+    "portsAttributes": {
+        "8000": {
+            "label": "FastAPI uvicorn",
+            "onAutoForward": "notify"
+        },
+        "5432": {
+            "label": "PostgreSQL",
+            "onAutoForward": "silent"
+        }
+    },
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "pip install --user -r requirements.txt",
+
+	// Configure tool-specific properties.
+	"customizations": {
+        "vscode": {
+            "extensions": [
+                // General
+                "Gruntfuggly.todo-tree",
+                "robole.file-bunny",
+                "streetsidesoftware.code-spell-checker",
+                // Language mode
+                "tamasfe.even-better-toml",
+                "shd101wyy.markdown-preview-enhanced",
+                // Shell
+                "timonwong.shellcheck",
+                // Git
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                // Code assistant
+                "VisualStudioExptTeam.vscodeintellicode",
+                // Python
+                "ms-python.vscode-pylance",
+                "ms-python.python",
+                "charliermarsh.ruff",
+                "ms-python.mypy-type-checker",
+                "njpwerner.autodocstring",
+                // SQL
+                "cweijan.vscode-postgresql-client2"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+                "[python]": {
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                    //   "source.fixAll.ruff": "explicit",
+                      "source.organizeImports.ruff": "explicit"
+                    },
+                    "editor.defaultFormatter": "charliermarsh.ruff"
+                },
+                // "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+                // "mypy-type-checker.path": ["${workspaceFolder}/.venv/bin/mypy"]
+                "database-client.telemetry.usesOnlineServices": false
+            }
+        }
+    }
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

@@ -1,0 +1,51 @@
+{
+    "type": "FeatureCollection",
+    "name": "RealEstate",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "id": 1,
+                "name": "Marker 1",
+                "popupContent": "Marker 1"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    139.76712479635535,
+                    35.68223617258725
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": 2,
+                "name": "Marker 2",
+                "popupContent": "Marker 2"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    139.76712479635535,
+                    35.68123617258725
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": 3,
+                "name": "Marker 3",
+                "popupContent": "Marker 3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    139.76712479635535,
+                    35.68023617258725
+                ]
+            }
+        }
+    ]
+}

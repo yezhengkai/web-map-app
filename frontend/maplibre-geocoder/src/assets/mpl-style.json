@@ -1,0 +1,42 @@
+{
+    "version": 8,
+    "sources": {
+        "m_mono": {
+            "type": "raster",
+            "tiles": [
+                "https://tile.mierune.co.jp/mierune_mono/{z}/{x}/{y}.png"
+            ],
+            "tileSize": 256,
+            "attribution":
+                "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
+        },
+        "osm": {
+            "type": "raster",
+            "tiles": [
+              "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ],
+            "tileSize": 256,
+            "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
+            "minzoom": 0,
+            "maxzoom": 19
+          }
+    },
+    "layers": [
+        {
+            "id": "m_mono",
+            "type": "raster",
+            "source": "m_mono",
+            "minzoom": 0,
+            "maxzoom": 18
+        },
+        {
+            "id": "osm",
+            "type": "raster",
+            "source": "osm",
+            "minzoom": 0,
+            "maxzoom": 18
+        }
+    ]
+}

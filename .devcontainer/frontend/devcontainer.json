@@ -1,0 +1,85 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+{
+    "name": "Node.js",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "frontend",
+    "workspaceFolder": "/workspaces/frontend",
+
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    // "features": {},
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
+    "portsAttributes": {
+        "5173": {
+            "label": "Vite dev",
+            "onAutoForward": "notify"
+        },
+        "4173": {
+            "label": "Vite preview",
+            "onAutoForward": "notify"
+        }
+    },
+
+    // Use 'postCreateCommand' to run commands after the container is created.
+    // "postCreateCommand": "yarn install",
+
+    // Configure tool-specific properties.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // General
+                "Gruntfuggly.todo-tree",
+                "robole.file-bunny",
+                "streetsidesoftware.code-spell-checker",
+                // Language support
+                "tamasfe.even-better-toml",
+                "shd101wyy.markdown-preview-enhanced",
+                "VisualStudioExptTeam.vscodeintellicode",
+                // Shell
+                "timonwong.shellcheck",
+                // Git
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                // JS/TS
+                "dbaeumer.vscode-eslint",
+                "xabikos.JavaScriptSnippets",
+                "christian-kohler.path-intellisense",
+                // Vite
+                // "antfu.vite",
+                "ZixuanChen.vitest-explorer",
+                "Vue.volar",
+                "Vue.vscode-typescript-vue-plugin"
+            ],
+            "settings": {
+                "[css]": {
+                    "editor.suggest.insertMode": "replace",
+                    "cSpell.fixSpellingWithRenameProvider": false,
+                    "editor.tabSize": 2
+                },
+                "[html]": {
+                    "editor.suggest.insertMode": "replace",
+                    "editor.formatOnType": true,
+                    "editor.tabSize": 2
+                },
+                "[javascript]": {
+                    "editor.defaultFormatter": "vscode.typescript-language-features",
+                    "editor.maxTokenizationLineLength": 2500,
+                    "editor.tabSize": 2,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit",
+                        "source.fixAll.eslint": "explicit"
+                    }
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+                },
+                "vitest.enable": true
+            }
+        }
+    }
+
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
+}
