@@ -11,6 +11,7 @@ import { GeocodingServices } from './modules/utils';
 // https://www.stefanjudis.com/snippets/how-to-import-json-files-in-es-modules-node-js/
 import mplStyle from './assets/mpl-style.json' assert { type: 'json' };
 
+const { BASE_URL } = import.meta.env;
 // const geocodingProvider = 'japan-gsi';
 const geocodingProvider = 'nominatim';
 const markerLngLat = [139.76712479635535, 35.68123617258725];
@@ -28,7 +29,7 @@ const map = new maplibregl.Map({
 const marker = new maplibregl.Marker().setLngLat(markerLngLat).addTo(map)
 
 marker.getElement().addEventListener('click', () => {
-  window.open('/test1.txt')
+  window.open(`${BASE_URL}test1.txt`)
 });
 
 
